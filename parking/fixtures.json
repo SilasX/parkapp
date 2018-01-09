@@ -1,0 +1,34 @@
+[
+{
+  "model": "parking.parkingspot",
+  "pk": 1,
+  "fields": {
+    "is_available": true,
+    "location": "SRID=4326;POINT (-122.410768 37.781781)"
+  }
+},
+{
+  "model": "parking.parkingspot",
+  "pk": 2,
+  "fields": {
+    "is_available": true,
+    "location": "SRID=4326;POINT (-122.407768 37.768781)"
+  }
+},
+{
+  "model": "parking.parkingspot",
+  "pk": 3,
+  "fields": {
+    "is_available": true,
+    "location": "SRID=4326;POINT (-122.413768 37.782781)"
+  }
+},
+{
+  "model": "parking.parkingspot",
+  "pk": 4,
+  "fields": {
+    "is_available": true,
+    "location": "SRID=4326;POINT (-121.413768 36.782781)"
+  }
+}
+]
