@@ -1,14 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render
-
-# Create your views here.
-
-
 from django.contrib.auth.models import User, Group
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
 from serializers import UserSerializer, GroupSerializer
+from rest_framework.serializers import ModelSerializer
+from models import ParkingSpot
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -25,3 +22,19 @@ class GroupViewSet(viewsets.ModelViewSet):
     """
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+
+
+class ParkingSpotListSerializer(ModelSerializer):
+    class Meta:
+        model = ParkingSpot
+        fields = ('id', 'is_available', 'location')
+
+
+class ParkingSpotList(generics.ListCreateAPIView):
+
+    serializer_class = ParkingSpotListSerializer
+    # model = ParkingSpot
+
+    def get_queryset(self):
+        queryset = ParkingSpot.objects.all()
+        return queryset
