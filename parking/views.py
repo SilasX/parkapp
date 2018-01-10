@@ -7,6 +7,9 @@ from serializers import UserSerializer, GroupSerializer
 from rest_framework.serializers import ModelSerializer
 from models import ParkingSpot
 
+from django.contrib.gis.geos import fromstr
+from django.contrib.gis.measure import D
+
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -37,4 +40,26 @@ class ParkingSpotList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         queryset = ParkingSpot.objects.all()
+        near = self.request.query_params.get('near')
+        distance = self.request.query_params.get('distance')
+        if near:
+            # user has specified a near parameter, looking for
+            # objects within a certain distance; assume distance
+            # is in km
+            try:
+                point = fromstr(near, srid=4326)
+                if distance:
+                    try:
+                        distance = int(distance)
+                    except ValueError:
+                        # Default to 2 km.
+                        distance = 2
+                else:
+                    distance = 2
+                queryset = queryset.filter(
+                    location__distance_lte=(point, D(km=distance))
+                )
+            except ValueError:
+                # Ignore all the above and just return queryset
+                return queryset
         return queryset
