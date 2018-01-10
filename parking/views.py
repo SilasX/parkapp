@@ -50,7 +50,7 @@ class ParkingSpotList(generics.ListCreateAPIView):
                 point = fromstr(near, srid=4326)
                 if distance:
                     try:
-                        distance = int(distance)
+                        distance = float(distance)
                     except ValueError:
                         # Default to 2 km.
                         distance = 2
