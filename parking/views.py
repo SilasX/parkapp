@@ -5,7 +5,7 @@ from django.contrib.auth.models import User, Group
 from rest_framework import viewsets, generics
 from serializers import UserSerializer, GroupSerializer
 from rest_framework.serializers import ModelSerializer
-from models import ParkingSpot
+from models import ParkingSpot, Reservation
 
 from django.contrib.gis.geos import fromstr
 from django.contrib.gis.measure import D
@@ -62,4 +62,19 @@ class ParkingSpotList(generics.ListCreateAPIView):
             except ValueError:
                 # Ignore all the above and just return queryset
                 return queryset
+        return queryset
+
+
+class ReservationSerializer(ModelSerializer):
+    class Meta:
+        model = Reservation
+        fields = ("user", "parking_spot", "start_time", "end_time")
+
+
+class ReservationList(generics.ListCreateAPIView):
+
+    serializer_class = ReservationSerializer
+
+    def get_queryset(self):
+        queryset = Reservation.objects.all()
         return queryset
