@@ -77,4 +77,11 @@ class ReservationList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         queryset = Reservation.objects.all()
+        mine = self.request.query_params.get('mine')
+        if mine is not None:
+            if not bool(mine):
+                return queryset
+            if self.request.user.is_authenticated:
+                queryset = queryset.filter(user__id=self.request.user.pk)
+                return queryset
         return queryset
